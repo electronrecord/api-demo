@@ -1,7 +1,8 @@
 <template>
   <main class="about-page">
-    <h1>Here are my blog posts:</h1>
-    <ul>
+    <h1>Hey {{ user.name }}, here are my blog posts:</h1>
+    <p v-if="fetching">Data is fetching from server ...</p>
+    <ul v-else>
       <li v-for="post in posts">
         <h2>
           <span>{{ post.id }}.&nbsp;</span>
@@ -20,18 +21,28 @@
     name: 'Blog',
     data () {
       return {
-        posts: []
+        posts: [],
+        fetching: false
       }
     },
     created () {
       const url = `https://jsonplaceholder.typicode.com/posts`
+      this.fetching = true
       axios.get(url)
-        .then(resp => {
-          this.posts = resp.data
+        .then(response => {
+          this.posts = response.data
+          this.fetching = false
+          // aici a venit raspunsul
         })
         .catch(e => {
           console.log(e.response ? e.response.data : e)
+          this.fetching = false
         })
+    },
+    computed: {
+      user () {
+        return this.$store.state.user
+      }
     }
   }
 </script>

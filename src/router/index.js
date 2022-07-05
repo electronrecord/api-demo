@@ -5,6 +5,7 @@ import About from '../views/About'
 import Blog from '../views/Blog'
 import Post from '../views/Post'
 import Contact from '../views/Contact'
+import Login from '../views/Login'
 import PageNotFound from '../views/PageNotFound'
 
 Vue.use(VueRouter)
@@ -12,8 +13,17 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    redirect: '/home'
+  },
+  {
+    path: '/home',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   },
   {
     path: '/about',
@@ -28,7 +38,10 @@ const routes = [
   {
     path: '/blog',
     name: 'blog',
-    component: Blog
+    component: Blog,
+    meta: {
+      auth: false
+    }
   },
   {
     path: '/post/:id',
@@ -46,6 +59,15 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta?.auth) {
+    window.alert('You are not allowed to view this page without admin permission!')
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router
