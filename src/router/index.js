@@ -6,6 +6,7 @@ import Blog from '../views/Blog'
 import Post from '../views/Post'
 import Contact from '../views/Contact'
 import Login from '../views/Login'
+import Restaurant from '../views/Restaurant'
 import PageNotFound from '../views/PageNotFound'
 
 Vue.use(VueRouter)
@@ -19,6 +20,11 @@ const routes = [
     path: '/home',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/restaurant/:id',
+    name: 'restaurant',
+    component: Restaurant
   },
   {
     path: '/login',
